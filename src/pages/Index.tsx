@@ -13,14 +13,12 @@ import {
   ArrowRight,
   Crown
 } from 'lucide-react';
-import bgHero from '@/assets/bg-hero.png';
+import bgHero from '@/assets/bg-thumbnail.png';
 
 const Index = () => {
   const isLoggedIn = localStorage.getItem('authToken');
 
-  // Placeholder video URL - replace with your actual video
-  const videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
-
+  const videoUrl = '/Intro.mp4';
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
