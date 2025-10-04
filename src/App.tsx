@@ -13,6 +13,10 @@ import { Profile } from "./pages/Profile";
 import { Submit } from "./pages/Submit";
 import { Tournament } from "./pages/Tournament";
 import Admin from "./pages/Admin";
+import { Rules } from "./pages/Rules";
+import { FAQ } from "./pages/FAQ";
+import { Privacy } from "./pages/Privacy";
+import { Terms } from "./pages/Terms";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +71,10 @@ const App = () => (
               <Admin />
             </ProtectedRoute>
           } />
+          <Route path="/rules" element={<Rules />} />
+          <Route path="/faq" element={<FAQ />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
