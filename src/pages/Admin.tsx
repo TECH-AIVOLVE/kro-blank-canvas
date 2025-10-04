@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { apiService, AdminAuditEntry, AdminActionStats, AdminUser } from '@/lib/api';
-import { Shield, UserCog, Trash2, Upload, TrendingUp, Clock, AlertCircle } from 'lucide-react';
+import { Shield, UserCog, Trash2, Upload, TrendingUp, Clock, CircleAlert as AlertCircle } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
@@ -37,28 +37,15 @@ export default function Admin() {
   const checkAdminAccess = async () => {
     setLoading(true);
     try {
-      // TEMPORARY: Guest mode for UI design - REMOVE IN PRODUCTION
-      const guestMode = true;
-      
-      if (guestMode) {
-        setIsAdmin(true);
-        await loadAdminData().catch(() => {
-          // Silently fail for guest mode
-          console.log('Guest mode: Could not load admin data');
-        });
-        setLoading(false);
-        return;
-      }
-
-      const userIdStr = localStorage.getItem('userId');
-      if (!userIdStr) {
+      const userInfo = localStorage.getItem('userInfo');
+      if (!userInfo) {
         navigate('/dashboard');
         return;
       }
 
-      const userId = parseInt(userIdStr);
-      const { is_admin } = await apiService.checkUserAdminStatus(userId);
-      
+      const user = JSON.parse(userInfo);
+      const { is_admin } = await apiService.checkUserAdminStatus(user.id);
+
       if (!is_admin) {
         toast({
           title: 'Access Denied',

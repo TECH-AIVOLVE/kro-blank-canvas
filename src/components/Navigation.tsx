@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Mic, Sword, Trophy, User, LogOut, Menu, X, Crown, Shield } from 'lucide-react';
+import { Mic, Sword, Trophy, User, LogOut, Menu, X, Crown, Shield, FileAudio } from 'lucide-react';
 import { apiService } from '@/lib/api';
 
 export const Navigation = () => {
@@ -12,26 +12,19 @@ export const Navigation = () => {
   const isLoggedIn = localStorage.getItem('authToken');
 
   useEffect(() => {
-    // TEMPORARY: Guest mode enabled for UI design
-    setIsAdmin(true);
-    
-    // Check if user is admin
     const checkAdmin = async () => {
-      const token = localStorage.getItem('authToken');
-      if (token && token !== 'guest') {
+      const userInfo = localStorage.getItem('userInfo');
+      if (userInfo) {
         try {
-          const userId = localStorage.getItem('userId');
-          if (userId) {
-            const result = await apiService.checkUserAdminStatus(parseInt(userId));
-            setIsAdmin(result.is_admin);
-          }
+          const user = JSON.parse(userInfo);
+          const result = await apiService.checkUserAdminStatus(user.id);
+          setIsAdmin(result.is_admin);
         } catch (error) {
-          // Keep guest mode enabled
-          setIsAdmin(true);
+          setIsAdmin(false);
         }
       }
     };
-    
+
     if (isLoggedIn) {
       checkAdmin();
     }
@@ -42,6 +35,7 @@ export const Navigation = () => {
     { path: '/leaderboard', label: 'Leaderboard', icon: Trophy },
     { path: '/tournament', label: 'Tournament', icon: Crown },
     { path: '/submit', label: 'Submit', icon: Mic },
+    { path: '/my-submissions', label: 'My Submissions', icon: FileAudio },
     { path: '/profile', label: 'Profile', icon: User },
     ...(isAdmin ? [{ path: '/admin', label: 'Admin', icon: Shield }] : []),
   ];

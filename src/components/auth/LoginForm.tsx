@@ -104,7 +104,12 @@ export const LoginForm = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link to="/forgot-password" className="text-xs text-primary hover:text-primary-glow">
+                  Forgot password?
+                </Link>
+              </div>
               <Input
                 id="password"
                 type="password"
@@ -115,7 +120,7 @@ export const LoginForm = () => {
                 className="electric-border"
               />
             </div>
-            
+
             <Button
               type="submit"
               variant="battle"
