@@ -12,6 +12,9 @@ export const Navigation = () => {
   const isLoggedIn = localStorage.getItem('authToken');
 
   useEffect(() => {
+    // TEMPORARY: Guest mode enabled for UI design
+    setIsAdmin(true);
+    
     // Check if user is admin
     const checkAdmin = async () => {
       const token = localStorage.getItem('authToken');
@@ -23,7 +26,8 @@ export const Navigation = () => {
             setIsAdmin(result.is_admin);
           }
         } catch (error) {
-          setIsAdmin(false);
+          // Keep guest mode enabled
+          setIsAdmin(true);
         }
       }
     };
