@@ -37,28 +37,15 @@ export default function Admin() {
   const checkAdminAccess = async () => {
     setLoading(true);
     try {
-      // TEMPORARY: Guest mode for UI design - REMOVE IN PRODUCTION
-      const guestMode = true;
-      
-      if (guestMode) {
-        setIsAdmin(true);
-        await loadAdminData().catch(() => {
-          // Silently fail for guest mode
-          console.log('Guest mode: Could not load admin data');
-        });
-        setLoading(false);
-        return;
-      }
-
-      const userIdStr = localStorage.getItem('userId');
-      if (!userIdStr) {
+      const userInfo = localStorage.getItem('userInfo');
+      if (!userInfo) {
         navigate('/dashboard');
         return;
       }
 
-      const userId = parseInt(userIdStr);
-      const { is_admin } = await apiService.checkUserAdminStatus(userId);
-      
+      const user = JSON.parse(userInfo);
+      const { is_admin } = await apiService.checkUserAdminStatus(user.id);
+
       if (!is_admin) {
         toast({
           title: 'Access Denied',

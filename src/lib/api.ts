@@ -381,8 +381,46 @@ async register(userData: {
     const response = await fetch(`${API_BASE_URL}/api/v1/admin/users/admins`, {
       headers: this.getAuthHeaders(),
     });
-    
+
     return this.handleResponse<AdminUser[]>(response);
+  }
+
+  async getAvailableBeats(): Promise<{ id: number; title: string; bpm: number; style: string; duration: string; file_url: string }[]> {
+    const response = await fetch(`${API_BASE_URL}/api/v1/beats/`, {
+      headers: this.getAuthHeaders(),
+    });
+
+    return this.handleResponse<{ id: number; title: string; bpm: number; style: string; duration: string; file_url: string }[]>(response);
+  }
+
+  async requestPasswordReset(email: string): Promise<{ message: string }> {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/password-reset`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+
+    return this.handleResponse<{ message: string }>(response);
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/password-reset/confirm`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, new_password: newPassword }),
+    });
+
+    return this.handleResponse<{ message: string }>(response);
+  }
+
+  async updateUserProfile(userId: number, data: { mc_name?: string; hometown?: string }): Promise<User> {
+    const response = await fetch(`${API_BASE_URL}/api/v1/users/${userId}`, {
+      method: 'PUT',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+
+    return this.handleResponse<User>(response);
   }
 }
 
