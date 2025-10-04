@@ -2,41 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Rap Battle Design System - Hip-hop inspired with electric colors and urban aesthetics
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark theme with electric neon accents */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 240 10% 7%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 240 10% 7%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Electric purple - main rap battle brand */
+    --primary: 267 85% 65%;
+    --primary-foreground: 240 10% 3.9%;
+    --primary-glow: 267 85% 75%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Electric cyan for accents */
+    --secondary: 190 95% 65%;
+    --secondary-foreground: 240 10% 3.9%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 240 5% 15%;
+    --muted-foreground: 240 5% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Fire orange for highlights */
+    --accent: 25 95% 65%;
+    --accent-foreground: 240 10% 3.9%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 240 5% 15%;
+    --input: 240 5% 15%;
+    --ring: 267 85% 65%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Battle-specific colors */
+    --battle-win: 142 76% 55%;
+    --battle-lose: 0 85% 65%;
+    --battle-draw: 45 93% 55%;
+    
+    /* Gradients for dynamic effects */
+    --gradient-primary: linear-gradient(135deg, hsl(267 85% 65%), hsl(267 85% 75%));
+    --gradient-battle: linear-gradient(135deg, hsl(267 85% 65%), hsl(190 95% 65%));
+    --gradient-fire: linear-gradient(135deg, hsl(25 95% 65%), hsl(15 95% 70%));
+    --gradient-cyber: linear-gradient(135deg, hsl(190 95% 65%), hsl(220 95% 65%));
+    
+    /* Shadows with glow effects */
+    --shadow-electric: 0 0 30px hsl(267 85% 65% / 0.5);
+    --shadow-battle: 0 10px 40px hsl(267 85% 65% / 0.3);
+    --shadow-neon: 0 0 20px hsl(190 95% 65% / 0.6);
+    
+    /* Animations */
+    --transition-battle: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-glow: all 0.3s ease-out;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +125,74 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  /* Electric glow animations */
+  @keyframes electric-pulse {
+    0% { box-shadow: 0 0 5px hsl(var(--primary) / 0.5); }
+    50% { box-shadow: 0 0 25px hsl(var(--primary) / 0.8); }
+    100% { box-shadow: 0 0 5px hsl(var(--primary) / 0.5); }
+  }
+
+  @keyframes battle-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+  }
+
+  @keyframes neon-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary-glow));
+  }
+}
+
+@layer components {
+  /* Battle-specific utility classes */
+  .battle-glow {
+    box-shadow: var(--shadow-battle);
+  }
+
+  .electric-border {
+    border: 1px solid hsl(var(--primary));
+    box-shadow: 0 0 10px hsl(var(--primary) / 0.3);
+  }
+
+  .neon-text {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.8);
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-battle {
+    background: var(--gradient-battle);
+  }
+
+  .gradient-fire {
+    background: var(--gradient-fire);
+  }
+
+  .gradient-cyber {
+    background: var(--gradient-cyber);
   }
 }
