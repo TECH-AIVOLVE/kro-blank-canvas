@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { apiService, AdminAuditEntry, AdminActionStats, AdminUser } from '@/lib/api';
-import { Shield, UserCog, Trash2, Upload, TrendingUp, Clock, AlertCircle } from 'lucide-react';
+import { Shield, UserCog, Trash2, Upload, TrendingUp, Clock, CircleAlert as AlertCircle } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 

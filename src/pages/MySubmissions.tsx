@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AudioPlayer } from '@/components/AudioPlayer';
 import { CountdownTimer } from '@/components/CountdownTimer';
-import { Music, Clock, Users, Trophy, AlertCircle } from 'lucide-react';
+import { Music, Clock, Users, Trophy, CircleAlert as AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiService, SubmissionStatus } from '@/lib/api';
 import { useNavigate } from 'react-router-dom';

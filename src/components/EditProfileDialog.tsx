@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Edit } from 'lucide-react';
+import { CreditCard as Edit } from 'lucide-react';
 
 interface EditProfileDialogProps {
   currentMcName: string;
