@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,11 +8,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { apiService, AdminAuditEntry, AdminActionStats, AdminUser } from '@/lib/api';
-import { Shield, UserCog, Trash2, Upload, TrendingUp, Clock } from 'lucide-react';
+import { Shield, UserCog, Trash2, Upload, TrendingUp, Clock, AlertCircle } from 'lucide-react';
 import { Layout } from '@/components/Layout';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function Admin() {
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [recentActions, setRecentActions] = useState<AdminAuditEntry[]>([]);
   const [stats, setStats] = useState<AdminActionStats | null>(null);
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
@@ -27,8 +31,44 @@ export default function Admin() {
   const [userHistory, setUserHistory] = useState<AdminAuditEntry[]>([]);
 
   useEffect(() => {
-    loadAdminData();
+    checkAdminAccess();
   }, []);
+
+  const checkAdminAccess = async () => {
+    setLoading(true);
+    try {
+      const userIdStr = localStorage.getItem('userId');
+      if (!userIdStr) {
+        navigate('/dashboard');
+        return;
+      }
+
+      const userId = parseInt(userIdStr);
+      const { is_admin } = await apiService.checkUserAdminStatus(userId);
+      
+      if (!is_admin) {
+        toast({
+          title: 'Access Denied',
+          description: 'You do not have admin privileges',
+          variant: 'destructive',
+        });
+        navigate('/dashboard');
+        return;
+      }
+
+      setIsAdmin(true);
+      await loadAdminData();
+    } catch (error: any) {
+      toast({
+        title: 'Error verifying admin access',
+        description: error.message,
+        variant: 'destructive',
+      });
+      navigate('/dashboard');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const loadAdminData = async () => {
     try {
@@ -185,9 +225,32 @@ export default function Admin() {
     }
   };
 
+  if (loading || isAdmin === null) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto" />
+            <p className="text-muted-foreground">Verifying admin access...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!isAdmin) {
+    return null;
+  }
+
   return (
     <Layout>
       <div className="space-y-6">
+        <Alert className="border-primary/50 bg-primary/5">
+          <Shield className="h-4 w-4" />
+          <AlertDescription>
+            You are viewing the admin control panel. All actions are logged and monitored.
+          </AlertDescription>
+        </Alert>
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center">
             <Shield className="w-6 h-6 text-primary-foreground" />
